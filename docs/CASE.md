@@ -3,7 +3,7 @@
 Decisions captured from the grill-me session (July 12, 2026).
 
 ## Vision
-A single-user webapp that replaces Flo for period tracking *and* serves as a personal gym coach — prescribing phase-aligned workouts that maximize beginner gains while working *with* the user's menstrual cycle, not against it. Body goal: recomp with a glute + back focus for a toned, proportional look.
+A single-user webapp that tracks period *and* serves as a personal gym coach — prescribing phase-aligned workouts that maximize beginner gains while working *with* the user's menstrual cycle, not against it. Body goal: recomp with a glute + back focus for a toned, proportional look.
 
 ---
 
