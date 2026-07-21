@@ -10,7 +10,7 @@
 - **Test:** Vitest (unit + integration + auth-flow)
 
 ## Architecture Pattern
-**Option A** — separate deployables, restricted CORS via env var.
+separate deployables, restricted CORS via env var.
 
 ## Project Structure
 ```
