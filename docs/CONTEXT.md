@@ -4,8 +4,11 @@ A single-user webapp for period tracking and phase-aligned workout programming.
 
 ## Language
 
+**Username**:
+A unique alphanumeric identifier (3-30 characters, underscores allowed) set during onboarding. Used alongside a password for login. Stored in the `users` table.
+
 **Onboarding**:
-A mandatory wizard that captures the user's last period start date (approximate is acceptable), body goal preferences, optional initial measurements, and optional current max lifts. The app self-corrects phase prediction after 2-3 logged onsets.
+A mandatory wizard that captures a username and password, the user's last period start date (approximate is acceptable), body goal preferences, optional initial measurements, and optional current max lifts. The app self-corrects phase prediction after 2-3 logged onsets.
 
 **Period Onset**:
 Day 1 of a new menstrual cycle, defined as the first day of any bleeding or spotting that follows >21 days since the last onset.
@@ -58,4 +61,4 @@ A single repository containing `packages/shared`, `frontend/`, and `backend/`, o
 A numbered SQL file (e.g., `001_schema.sql`) applied forward-only via `wrangler d1 execute`. D1 has no native rollback; reversions are handled by backup restore or a compensating forward migration.
 
 **Rate Limiting**:
-Login endpoint limited to 5 attempts per 15 minutes per IP using Cloudflare KV. Returns 429 when exceeded. Applied even though the app is single-user.
+Login endpoint limited to 5 attempts per 15 minutes per username + per IP using Cloudflare KV. Returns 429 when exceeded. Both dimensions are tracked independently so that a single user isn't locked out by IP and brute-force on a specific username is still throttled.

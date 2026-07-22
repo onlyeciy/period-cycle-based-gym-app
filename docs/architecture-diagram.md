@@ -95,11 +95,11 @@ sequenceDiagram
     U->>R: Opens app
     R->>R: No JWT in localStorage
     R->>U: Shows login screen
-    U->>R: Enters password
-    R->>W: POST /api/v1/auth/login { password }
-    W->>K: Check rate_limit:login:<ip>
+    U->>R: Enters username + password
+    R->>W: POST /api/v1/auth/login { username, password }
+    W->>K: Check rate_limit:login:<username>:<ip>
     K-->>W: 3 attempts (under limit)
-    W->>D: SELECT password_hash FROM users
+    W->>D: SELECT password_hash FROM users WHERE username = ?
     D-->>W: $2b$12$...
     W->>W: bcrypt.compare
     W->>K: Clear rate limit counter

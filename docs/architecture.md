@@ -4,7 +4,7 @@
 - **Frontend:** React + Tailwind CSS + React Router + React Query
 - **Backend:** Cloudflare Workers (TypeScript)
 - **Database:** Cloudflare D1 (SQLite)
-- **Auth:** JWT (bcryptjs cost 12), KV login rate-limiting (5/15min per IP)
+- **Auth:** JWT (bcryptjs cost 12), KV login rate-limiting (5/15min per username + per IP)
 - **Hosting:** Cloudflare Pages (frontend) + Cloudflare Workers (backend)
 - **Build:** Vite (frontend) + wrangler (backend) + Turborepo (monorepo orchestration)
 - **Test:** Vitest (unit + integration + auth-flow)
@@ -77,7 +77,7 @@ All endpoints live under `/api/v1/`. The Worker base route strips the prefix so 
 | Endpoint | Auth | Validation Schema | Purpose |
 |---|---|---|---|
 | `GET /api/v1/health` | No | — | Health check for CI/deploy smoke test |
-| `POST /api/v1/auth/register` | No | `RegisterSchema` | Set password (onboarding) |
+| `POST /api/v1/auth/register` | No | `RegisterSchema` | Set username + password (onboarding) |
 | `POST /api/v1/auth/login` | No | `LoginSchema` | Returns JWT |
 | `POST /api/v1/onboarding` | Yes | `OnboardingSchema` | Submit wizard data (onset, preferences, measurements) |
 | `GET /api/v1/dashboard` | Yes | — | Phase banner, today's workout summary, PRs, latest measurements |
@@ -156,6 +156,6 @@ Manual `wrangler d1 execute --file=seed/exercises.sql` run once during initial s
 
 ### Auth-Flow Tests
 Three test cases in `test/auth/auth-flow.test.ts`:
-1. `POST /api/v1/auth/register` with valid password → 201
+1. `POST /api/v1/auth/register` with valid username + password → 201
 2. `POST /api/v1/auth/login` with valid credentials → 200 + JWT in body
 3. `GET /api/v1/workouts/today` without `Authorization` header → 401

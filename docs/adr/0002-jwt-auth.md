@@ -12,7 +12,7 @@ Options considered:
 - **Database sessions** — stateful tokens stored in a sessions table
 
 ## Decision
-**JWT** with a `users` table (one row), bcryptjs password hashing (cost factor 12), and KV-based login rate-limiting.
+**JWT** with a `users` table (username + password_hash), bcryptjs password hashing (cost factor 12), and KV-based login rate-limiting per username + per IP.
 
 ## Rationale
 - No database lookup on every request (stateless)

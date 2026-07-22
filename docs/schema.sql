@@ -1,5 +1,12 @@
 -- Personal Gym + Cycle Coach — D1 Schema
 
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
 CREATE TABLE period_onsets (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   onset_date DATE NOT NULL UNIQUE,

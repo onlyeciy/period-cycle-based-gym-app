@@ -39,10 +39,11 @@ A single-user webapp that tracks period *and* serves as a personal gym coach —
 Dashboard showing: phase banner + next phase prediction, today's recommended workout (quick-start button), latest strength PRs, latest measurement context, quick symptom/period log prompt. Progress screens are merged into this tab rather than a dedicated tab.
 
 ### Onboarding (Full Wizard)
-1. Last period start date — mandatory, but approximate is acceptable. The app self-corrects after 2-3 logged onsets.
-2. Body goal confirmation (recomp, lower body + back)
-3. Initial measurements (waist, hip, glute) — optional, skip-able with guidance
-4. Optional: current max lifts for a smarter starting point
+1. Username + password — mandatory, username must be unique (3-30 chars, alphanumeric + underscores)
+2. Last period start date — mandatory, but approximate is acceptable. The app self-corrects after 2-3 logged onsets.
+3. Body goal confirmation (recomp, lower body + back)
+4. Initial measurements (waist, hip, glute) — optional, skip-able with guidance
+5. Optional: current max lifts for a smarter starting point
 
 ### Navigation
 - **Mobile:** Bottom tab bar (3): Home | Cycle | Workout. Hamburger menu (top-left) for Settings.
@@ -53,7 +54,7 @@ Dashboard showing: phase banner + next phase prediction, today's recommended wor
 - **Frontend:** React + Tailwind CSS
 - **Hosting + API:** Cloudflare Pages + Workers
 - **Database:** Cloudflare D1 (SQLite-based, 5GB free)
-- **Auth:** None (single-user)
+- **Auth:** JWT with username + password, bcryptjs cost 12, KV rate-limiting per username + per IP
 - **AI:** None in v1. All coaching is deterministic (if/else + lookup tables). AI may be added later via Cloudflare Workers AI for free-text logging or pattern detection.
 
 ### Settings
