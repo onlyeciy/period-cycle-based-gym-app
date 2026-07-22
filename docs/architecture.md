@@ -72,22 +72,25 @@ separate deployables, restricted CORS via env var.
 
 ## API Endpoints
 
+All endpoints live under `/api/v1/`. The Worker base route strips the prefix so handler code references paths without it.
+
 | Endpoint | Auth | Validation Schema | Purpose |
 |---|---|---|---|
-| `GET /api/health` | No | — | Health check for CI/deploy smoke test |
-| `POST /api/auth/register` | No | `RegisterSchema` | Set password (onboarding) |
-| `POST /api/auth/login` | No | `LoginSchema` | Returns JWT |
-| `POST /api/onboarding` | Yes | `OnboardingSchema` | Submit wizard data (onset, preferences, measurements) |
-| `GET /api/dashboard` | Yes | — | Phase banner, today's workout summary, PRs, latest measurements |
-| `GET /api/cycle` | Yes | — | Calendar data with phase colors, onsets, predictions |
-| `POST /api/period-onsets` | Yes | `PeriodOnsetSchema` | Log onset |
-| `POST /api/symptoms` | Yes | `SymptomSchema` | Log symptom |
-| `GET /api/workouts/today` | Yes | — | Generated workout for today |
-| `POST /api/workout-sessions` | Yes | `WorkoutSessionSchema` | Save completed session |
-| `GET /api/preferences` | Yes | — | Read preferences |
-| `PATCH /api/preferences` | Yes | `PreferencesSchema` | Update preferences |
+| `GET /api/v1/health` | No | — | Health check for CI/deploy smoke test |
+| `POST /api/v1/auth/register` | No | `RegisterSchema` | Set password (onboarding) |
+| `POST /api/v1/auth/login` | No | `LoginSchema` | Returns JWT |
+| `POST /api/v1/onboarding` | Yes | `OnboardingSchema` | Submit wizard data (onset, preferences, measurements) |
+| `GET /api/v1/dashboard` | Yes | — | Phase banner, today's workout summary, PRs, latest measurements |
+| `GET /api/v1/cycle` | Yes | — | Calendar data with phase colors, onsets, predictions |
+| `POST /api/v1/period-onsets` | Yes | `PeriodOnsetSchema` | Log onset |
+| `POST /api/v1/symptoms` | Yes | `SymptomSchema` | Log symptom |
+| `GET /api/v1/workouts/today` | Yes | — | Generated workout for today |
+| `POST /api/v1/workout-sessions` | Yes | `WorkoutSessionSchema` | Save completed session |
+| `GET /api/v1/preferences` | Yes | — | Read preferences |
+| `PATCH /api/v1/preferences` | Yes | `PreferencesSchema` | Update preferences |
 
 ## API Design Rules
+- **Versioning:** All endpoints live under `/api/v1/`. When a breaking change is needed, increment to `/api/v2/` while keeping v1 running until no consumers reference it.
 - **CORS:** Worker reads `CORS_ORIGIN` env var (set via `wrangler secret put CORS_ORIGIN`). Returns `Access-Control-Allow-Origin: <value>`. No wildcard.
 - **Auth:** Every protected endpoint returns 401 if JWT is missing/expired. 403 for invalid token signature.
 - **Validation:** Zod schemas in `packages/shared/src/schemas.ts`. Applied at the top of each handler before business logic.
@@ -149,10 +152,10 @@ Cycle engine calculates phase for any date by loading onsets, computing median c
 Manual `wrangler d1 execute --file=seed/exercises.sql` run once during initial setup.
 
 ### Health Check
-`GET /api/health` returns `200 { "status": "ok", "timestamp": "..." }`. Used as a smoke test in `deploy-backend.yml` CI after deploy.
+`GET /api/v1/health` returns `200 { "status": "ok", "timestamp": "..." }`. Used as a smoke test in `deploy-backend.yml` CI after deploy.
 
 ### Auth-Flow Tests
 Three test cases in `test/auth/auth-flow.test.ts`:
-1. `POST /api/auth/register` with valid password → 201
-2. `POST /api/auth/login` with valid credentials → 200 + JWT in body
-3. `GET /api/workouts/today` without `Authorization` header → 401
+1. `POST /api/v1/auth/register` with valid password → 201
+2. `POST /api/v1/auth/login` with valid credentials → 200 + JWT in body
+3. `GET /api/v1/workouts/today` without `Authorization` header → 401

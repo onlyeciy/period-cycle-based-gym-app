@@ -58,7 +58,7 @@ graph TB
 
     USER(["User"]) --> REACT
 
-    REACT -- "GET /api/*
+    REACT -- "GET /api/v1/*
               Authorization: Bearer token" --> CORS
     CORS --> AUTH
     AUTH --> VALIDATE
@@ -96,7 +96,7 @@ sequenceDiagram
     R->>R: No JWT in localStorage
     R->>U: Shows login screen
     U->>R: Enters password
-    R->>W: POST /api/auth/login { password }
+    R->>W: POST /api/v1/auth/login { password }
     W->>K: Check rate_limit:login:<ip>
     K-->>W: 3 attempts (under limit)
     W->>D: SELECT password_hash FROM users
@@ -117,7 +117,7 @@ sequenceDiagram
     participant W as Worker
     participant D as D1
 
-    R->>W: GET /api/dashboard
+    R->>W: GET /api/v1/dashboard
     W->>W: CORS check (CORS_ORIGIN match)
     W->>W: Verify JWT signature
     W->>W: Fetch phase + today's workout + PRs
@@ -151,5 +151,5 @@ sequenceDiagram
     GH->>GH: turbo run test
     GH->>P: wrangler pages publish
     GH->>W: wrangler deploy
-    W->>W: Smoke test: GET /api/health
+    W->>W: Smoke test: GET /api/v1/health
 ```
